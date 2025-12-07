@@ -29,6 +29,10 @@ public class WikipediaTest {
     private static final By SUGGESTIONS = By.cssSelector(".cdx-typeahead-search-menu a.cdx-menu-item"); //wyswietlane sugestie
     private static final By CARLOS_ALCARAZ_LINK = By.cssSelector("a[title=\"Carlos Alcaraz\"]");
     private static final By STRONA_GLOWNA = By.cssSelector("a[title=\"Przejdź na stronę główną [alt-z]\"]");
+    private static final By BIBLIOGRAFIA_PRZYPISY = By.cssSelector(".vector-toc-text");
+    private static final By HEADER = By.cssSelector(".mw-page-title-main");
+    private static final By MAIN_MENU = By.id("vector-main-menu-dropdown");
+    private static final By CONTENTS = By.cssSelector(".vector-toc");
 
     @BeforeEach
     void setUp(){
@@ -102,6 +106,8 @@ public class WikipediaTest {
         WebElement searchBar = wait.until(ExpectedConditions.elementToBeClickable(SEARCH_BAR)); //czekamy az element bedzie widoczny i załadowany
 
         searchBar.sendKeys("Jannik Sinner" + Keys.ENTER);
+        wait.until(ExpectedConditions.urlContains("Jannik_Sinner")); //aż w url będzie jannik sinner
+
         String jannikUrl = driver.getCurrentUrl();
         WebElement alcarazLink = wait.until(ExpectedConditions.elementToBeClickable(CARLOS_ALCARAZ_LINK));
 
@@ -115,7 +121,7 @@ public class WikipediaTest {
     @DisplayName("Should check Strona Główna link in side menu")
     void shouldCheckStronaGlownaLinkInSideMenu(){
 
-        WebElement menu = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("vector-main-menu-dropdown")));
+        WebElement menu = wait.until(ExpectedConditions.visibilityOfElementLocated(MAIN_MENU));
         menu.click();
 
 
@@ -135,7 +141,7 @@ public class WikipediaTest {
         searchBar.sendKeys("Jannik Sinner" + Keys.ENTER);
         wait.until(ExpectedConditions.urlContains("Jannik"));
 
-        WebElement spisTresci = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".vector-toc")));
+        WebElement spisTresci = wait.until(ExpectedConditions.visibilityOfElementLocated(CONTENTS));
 
         assertThat(spisTresci.isDisplayed()).isTrue();
 
@@ -149,7 +155,7 @@ public class WikipediaTest {
         searchBar.sendKeys("Jannik Sinner" + Keys.ENTER);
         wait.until(ExpectedConditions.urlContains("Jannik"));
 
-        WebElement header = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mw-page-title-main")));
+        WebElement header = wait.until(ExpectedConditions.visibilityOfElementLocated(HEADER));
         assertThat(header.getText().equals("Jannik Sinner"));
     }
 
@@ -169,7 +175,7 @@ public class WikipediaTest {
         searchBar.sendKeys("Jannik Sinner" + Keys.ENTER);
         wait.until(ExpectedConditions.urlContains("Jannik"));
 
-        WebElement tested = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".vector-toc-text")));
+        WebElement tested = wait.until(ExpectedConditions.visibilityOfElementLocated(BIBLIOGRAFIA_PRZYPISY));
 
         assertThat(tested.getText().contains("Przypisy") || tested.getText().contains("Bibliografia"));
 
